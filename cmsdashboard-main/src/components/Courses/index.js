@@ -1,9 +1,11 @@
-import React,{useState,useEffect} from 'react'
+import React,{lazy,useState,useEffect,Suspense} from 'react'
 import FormRender from '../common/FormRender';
 import CommonTable from '../common/CommonTable';
-import CourseTable from '../common/CourseTable';
+// import CourseTable from '../common/CourseTable';
 import DashBoard from '../DashBoard';
-import Header from '../common/Header';
+// import Header from '../common/Header';
+const CourseTable = lazy(() => import('../common/CourseTable'));
+const Header = lazy(() => import('../common/Header'));
 
 function Courses() {
     const [formData, setFormData] = useState([
@@ -12,24 +14,32 @@ function Courses() {
           type: "text",
           name: "course_id",
           value: "",
+          error:false,
+          errorMessage: "please enter courseId"
         },
         {
           label: "Course Name",
           type: "text",
           name: "course_name",
           value: "",
+          error:false,
+          errorMessage: "please enter courseName"
         },
         {
           label: "Instructor",
           type: "text",
           name: "instructor",
           value: "",
+          error:false,
+          errorMessage: "please enter Instructor"
         },
         {
           label: "Enrolled Courses",
           type: "text",
           name: "enrolledCourses",
           value: "",
+          error:false,
+          errorMessage: "please enter Enrolled Courses"
         },
         
       ]);
@@ -77,7 +87,10 @@ function Courses() {
     
       return (
         <div>
-            <Header/>
+          <Suspense fallback={<div>Loading...</div>}>
+          <Header/>
+          </Suspense>
+            
           {selectedRow === null ? (
             <FormRender
               formData={formData}
@@ -89,11 +102,13 @@ function Courses() {
               onSubmit={(subject) => updateSubject(subject)}
             />
           )}
+          <Suspense fallback={<div>Loading...</div>}>
           <CourseTable
             courseData={courseData}
             onEdit={(index) => setSelectedRow(index)}
             onDelete={(index) => deleteSubject(index)}
           />
+          </Suspense>
         </div>
       )
 }

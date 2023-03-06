@@ -5,6 +5,7 @@ import CommonTable from "../common/CommonTable";
 import DashBoard from "../DashBoard";
 import Header from "../common/Header";
 
+
 function Subject() {
   // State to store the form data
   const [formData, setFormData] = useState([
@@ -13,30 +14,40 @@ function Subject() {
       type: "text",
       name: "subjectName",
       value: "",
+      error:false,
+      errorMessage: "please enter Subject Name"
     },
     {
       label: "Description",
       type: "text",
       name: "description",
       value: "",
+      error:false,
+      errorMessage: "please enter Description"
     },
     {
       label: "Course",
-      type: "text",
+      type: "dropdown",
       name: "code",
       value: "",
+      error:false,
+      errorMessage: "please enter Course"
     },
     {
       label: "Duration (in hours)",
       type: "number",
       name: "duration",
       value: "",
+      error:false,
+      errorMessage: "please enter Duration"
     },
     {
       label: "Price",
       type: "number",
       name: "price",
       value: "",
+      error:false,
+      errorMessage: "please enter Price"
     },
   ]);
 

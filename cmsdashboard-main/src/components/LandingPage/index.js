@@ -1,15 +1,16 @@
-import React,{useContext} from 'react';
+import React,{useContext, useState} from 'react';
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import {auth} from "../../firebaseConfig";
 import { userContext } from '../../context/userContext';
 import { useNavigate } from 'react-router-dom';
 import sideImage from "./images/sideImage.png";
 import Authentication from "./images/authentication.png";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import loginwithgoogle from "./images/google-signin-button.png"
 import GoogleIcon from '@mui/icons-material/Google';
 import './landingPage.css';
-
-function LandingPage() {
+import { Button, TextField, Typography } from '@mui/material';
+function LandingPage() {  
   const navigate=useNavigate();
   const [state,dispatch]=useContext(userContext);
     const redirectUser=({displayName,email,photoUrl})=>{
@@ -31,6 +32,29 @@ function LandingPage() {
     else{
       navigate('/');
     }
+  }
+  const[email,setEmail]=useState('');
+  const[password,setPassword]=useState('');
+  const auth=getAuth();
+  const signUp=()=>{
+    
+    createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      // Signed in 
+      const user = userCredential.user;
+      // ...
+      console.log(user);
+      
+      alert('Successfully created an account')
+     
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      alert(errorCode);
+      // ..
+    });
+
   }
     const signIn=()=>{
         
@@ -68,23 +92,62 @@ function LandingPage() {
             // ...
           });
     }
+    const redirectUser1=()=>{
+      dispatch({
+        type:'LOGIN'
+      })
+      if(state.isAuth){
+        navigate('/dashboard');
+      }
+      else{
+        navigate('/');
+      }
+    }
+    const signedIn=()=>{
+    signInWithEmailAndPassword(auth, email, password)
+  .then((userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+    console.log(user);
+  
+     redirectUser1();
+    alert('This user has successfully signed in');
+    // ...
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    alert(errorCode)
+  });
+    }
   return (
    
    <div className='wrapper-container'>
     <div className='side-image-container'>
         <img src={sideImage}/>
     </div>
+   
     <div className='signin-container'>
       <h2>
         Welcome
       </h2>
       <img src={Authentication}/>
    
-    <button onClick={signIn}>
+      <TextField id="outlined-basic" type={"email"}  label="Please enter your mail" variant="outlined" onChange={(e)=>setEmail(e.target.value)} sx={{
+        marginBottom:"20px"
+      }} />
+      <TextField id="outlined-basic" type={"password"} label="Please enter your password" variant="outlined"  onChange={(e)=>setPassword(e.target.value)} />
+    
+      <Button  onClick={signUp}>Create Account</Button>
+      <Button onClick={signedIn}>Sign in</Button>
+
+      <Typography>OR</Typography>
+     
+    <Button onClick={signIn}>
 Sign in with Google
       
         
-      </button>
+      </Button>
     </div>
     
     </div>

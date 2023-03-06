@@ -31,14 +31,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 function CourseTable({courseData,setCourseData,onDelete,onEdit}){
-  // State to store the table data
-  // const [courseData, setCourseData] = useState([]);
 
-  // // Fetch the data from local storage when the component mounts
-  // useEffect(() => {
-  //   const data = JSON.parse(localStorage.getItem("courseData")) || [];
-  //   setCourseData(data);
-  // }, []);
 
   // Helper function to save the data to local storage
   const saveData = (data) => {
@@ -69,30 +62,6 @@ function CourseTable({courseData,setCourseData,onDelete,onEdit}){
   };
 
   return (
-    // <table>
-    //   <thead>
-    //     <tr>
-    //       <th>Course Id</th>
-    //       <th>Course Name</th>
-    //       <th>Instructor</th>
-    //       <th>Enrolled Courses</th>
-    //     </tr>
-    //   </thead>
-    //   <tbody>
-    //     {courseData.map((row, index) => (
-    //       <tr key={index}>
-    //         <td>{row.course_id}</td>
-    //         <td>{row.course_name}</td>
-    //         <td>{row.instructor}</td>
-    //         <td>{row.enrolledCourses}</td>
-    //         <td>
-    //           <button onClick={() => onEdit(index, row)}>Edit</button>
-    //           <button onClick={() => onDelete(index)}>Delete</button>
-    //         </td>
-    //       </tr>
-    //     ))}
-    //   </tbody>
-    // </table>
     <TableContainer>
     <Table sx={{ minWidth:700 }} aria-label="customized table">
     <TableHead>
@@ -106,7 +75,6 @@ function CourseTable({courseData,setCourseData,onDelete,onEdit}){
       </TableHead>
       <TableBody>
       {courseData.map((row, index) => (
-        // <tr key={index}>
           <StyledTableRow key={index}>
             <StyledTableCell component="th" scope="row">{row.course_id}</StyledTableCell >
           <StyledTableCell align="right">{row.course_name} </StyledTableCell >
@@ -118,7 +86,6 @@ function CourseTable({courseData,setCourseData,onDelete,onEdit}){
             <button onClick={() => onDelete(index)}>Delete</button>
             </StyledTableCell>
             </StyledTableRow>
-        /* </tr> */
       ))}
     </TableBody>
     </Table>

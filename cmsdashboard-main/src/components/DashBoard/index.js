@@ -1,18 +1,19 @@
-import React from 'react'
-import CommonTable from '../common/CommonTable';
-import FormRender from '../common/FormRender';
+import React, {lazy,Suspense} from 'react'
+import {ErrorBoundary} from 'react-error-boundary'
 
-import Header from '../common/Header';
-import Courses from '../Courses';
-import Students from '../Students';
-import Subject from '../Subject';
-
+const OtherComponent = lazy(() => import('../Students'))
 function DashBoard() {
   return (
      
-     <Students/>
+        <div>
+           <ErrorBoundary fallback={<div>Oops, something went wrong!</div>}>
+           <Suspense fallback={<div>Loading...</div>}>
+        <OtherComponent />
+      </Suspense>
+           </ErrorBoundary>
      
-    
+    </div>
+         
      
   )
 }

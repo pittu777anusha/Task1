@@ -1,36 +1,45 @@
-import React, { useState, useEffect } from "react";
-import FormRender from "../common/FormRender";
-import CommonTable from "../common/CommonTable";
-import StudentTable from "../common/StudentTable";
-import DashBoard from "../DashBoard";
-import Header from "../common/Header";
+import React, { lazy,useState, useEffect,Suspense } from "react";
+const FormRender = lazy(() => import('../common/FormRender'));
+const StudentTable = lazy(() => import('../common/StudentTable'));
+const Header = lazy(() => import('../common/Header'));
+
 
 function Students() {
   // State to store the form data
+  
   const [formData, setFormData] = useState([
     {
         label: "Student_id",
         type: "text",
         name: "student_id",
         value: "",
+        error: false,
+        errorMessage: "please enter student id"
       },
       {
         label: "First Name",
         type: "text",
         name: "firstName",
         value: "",
+        error: false,
+        errorMessage: "please enter fname"
       },
       {
         label: "Email",
         type: "email",
         name: "email",
         value: "",
+        error: false,
+        errorMessage: "please enter mailid",
+        IsValidEmail: false,
       },
       {
         label: "Enrolled Courses",
         type: "select",
         name: "enrolledCourse",
         value: "",
+        error: false,
+        errorMessage: "please enter enrolled course"
       },
   ]);
 
@@ -77,23 +86,32 @@ function Students() {
 
   return (
     <div>
-       <Header/>
+        <Suspense fallback={<div>Loading...</div>}>
+        <Header/>
+        </Suspense>
+       
       {selectedRow === null ? (
         <FormRender
           formData={formData}
           onSubmit={(subject) => addSubject(subject)}
         />
       ) : (
-        <FormRender
+        // <Suspense fallback={<div>Loading...</div>}>
+ <FormRender
           formData={formData}
           onSubmit={(subject) => updateSubject(subject)}
         />
+        // </Suspense>
+       
       )}
+      <Suspense fallback={<div>Loading...</div>}>
       <StudentTable
         studentData={studentData}
         onEdit={(index) => setSelectedRow(index)}
         onDelete={(index) => deleteSubject(index)}
       />
+      </Suspense>
+      
     </div>
   );
 };
